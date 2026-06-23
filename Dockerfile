@@ -15,8 +15,10 @@ RUN apt-get update && apt-get install -y \
     pdo \
     pdo_mysql \
     mysqli \
-  && a2enmod rewrite \
   && rm -rf /var/lib/apt/lists/*
+
+RUN a2dismod mpm_event mpm_worker || true \
+  && a2enmod mpm_prefork rewrite
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
